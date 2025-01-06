@@ -1,6 +1,9 @@
 package com.br.manutencao_usuario.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,22 +11,18 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Table(name = "endereco")
+@Table(name="user")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Endereco {
+public class User {
     @Id
     @GeneratedValue
     private UUID id;
-    private String rua;
-    private String numero;
-    private String cidade;
-    private String uf;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private String name;
+    private String surname;
+    private String email;
+    private String cpf;
 }
