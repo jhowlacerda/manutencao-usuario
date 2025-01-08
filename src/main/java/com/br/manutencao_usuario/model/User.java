@@ -1,6 +1,7 @@
 package com.br.manutencao_usuario.model;
 
 import com.br.manutencao_usuario.dto.UserRegistrationDto;
+import com.br.manutencao_usuario.dto.UserUpdateDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -34,5 +35,23 @@ public class User {
         this.email = data.email();
         this.cpf = data.cpf();
         this.cellPhone = data.cellPhone();
+    }
+
+    public void updateInfo(UserUpdateDto data) {
+        if (data.name() != null){
+            this.name = data.name();
+        }
+        if (data.surname()!= null){
+            this.surname = data.surname();
+        }
+        if (data.email() != null){
+            this.email = data.email();
+        }
+        if (data.cellPhone() != null){
+            this.cellPhone = data.cellPhone();
+        }
+        if (data.cpf() != null){
+            this.cpf = data.cpf();
+        }
     }
 }
