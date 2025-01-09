@@ -3,56 +3,56 @@ package com.br.manutencao_usuario.controller;
 import com.br.manutencao_usuario.dto.UserRegistrationDto;
 import com.br.manutencao_usuario.dto.UserUpdateDto;
 import com.br.manutencao_usuario.model.User;
-import com.br.manutencao_usuario.repository.UserRepository;
+import com.br.manutencao_usuario.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
 
     @Autowired
-    private UserRepository repository;
+    private UserService service;
+
     @PostMapping
     @Transactional
-    public void register(@RequestBody @Valid UserRegistrationDto data){
-        repository.save(new User(data));
+    public ResponseEntity<User> save(@RequestBody @Valid UserRegistrationDto data){
+        var newUser = service.save(data);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<User>listar(){
-      return repository.findAll();
+    public ResponseEntity<List<User>>listar(){
+       return ResponseEntity.ok(service.listar());
     }
 
-    @GetMapping("/{id}")
-    public Optional<User> listarPorId(@PathVariable UUID id){
-        return repository.findById(id);
+    @GetMapping("/{cpf}")
+    public ResponseEntity<User> listarPorCpf(@PathVariable String cpf){
+        return ResponseEntity.ok(service.listarPorCpf(cpf));
     }
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid UserUpdateDto data){
-        var user = repository.getReferenceById(data.id());
-        user.updateInfo(data);
+    public ResponseEntity<User> atualizar(@RequestBody @Valid UserUpdateDto data){
+       return ResponseEntity.ok(service.atualizar(data));
     }
 
-    @PatchMapping("/{id}/{name}")
+    @PatchMapping("/{cpf}/{name}")
     @Transactional
-    public void atualizarNome(@PathVariable UUID id, @PathVariable String name){
-        var user = repository.getReferenceById(id);
-        user.setName(name);
-        repository.save(user);
+    public ResponseEntity<User> atualizarNome(@PathVariable String cpf, @PathVariable String name){
+        return ResponseEntity.ok(service.atualizarNome(cpf, name));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cpf}")
     @Transactional
-    public void delete(@PathVariable UUID id){
-        repository.deleteById(id);
+    public ResponseEntity<Void> delete(@PathVariable String cpf){
+        service.delete(cpf);
+        return ResponseEntity.noContent().build();
     }
 }

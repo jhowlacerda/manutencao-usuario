@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue
@@ -37,7 +35,7 @@ public class User {
         this.cellPhone = data.cellPhone();
     }
 
-    public void updateInfo(UserUpdateDto data) {
+    public User updateInfo(UserUpdateDto data) {
         if (data.name() != null){
             this.name = data.name();
         }
@@ -50,8 +48,6 @@ public class User {
         if (data.cellPhone() != null){
             this.cellPhone = data.cellPhone();
         }
-        if (data.cpf() != null){
-            this.cpf = data.cpf();
-        }
+    return User.this;
     }
 }
